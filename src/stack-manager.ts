@@ -17,7 +17,9 @@ export const popCardForRoom = (room: roomModel.Room) => {
   const scoreIncrements = poppedCards.map(card => toCardScore(card) === maxCardScore ? 1 : 0)
 
   // TODO: score mutation
-  room.users = room.users.map((u, index) => ({ ...u, score: scoreIncrements[index] + u.score }))
+  if (poppedCards.length === ROOM_SIZE) {
+    room.users = room.users.map((u, index) => ({ ...u, score: scoreIncrements[index] + u.score }))
+  }
 
   return poppedCards
 }

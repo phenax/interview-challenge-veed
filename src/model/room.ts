@@ -1,4 +1,4 @@
-import { CardStack, RoomId, UserId } from "../types"
+import { CardStack, RoomId } from "../types"
 
 export interface User {
   stack: CardStack
