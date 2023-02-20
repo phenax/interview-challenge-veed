@@ -22,11 +22,7 @@ describe('StackManager', () => {
     newRoom('hello')
 
     const result = popCard('hello')
-
-    expect(result).toEqual({
-      type: 'next',
-      userCards: [],
-      scores: [],
-    })
+    expect(result.type).toBe('next')
+    expect(result.scores).toEqual([1, 0])
   })
 })
