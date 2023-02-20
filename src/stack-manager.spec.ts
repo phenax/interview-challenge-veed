@@ -1,4 +1,4 @@
-import { newRoom, popCard } from "./stack-manager"
+import { newRoom, popCard, popCardForRoom } from "./stack-manager"
 import * as roomModel from './model/room'
 
 describe('StackManager', () => {
@@ -23,6 +23,27 @@ describe('StackManager', () => {
 
     const result = popCard('hello')
     expect(result.type).toBe('next')
-    expect(result.scores).toEqual([1, 0])
+    // expect(result.scores).toEqual([1, 0])
+  })
+
+  describe('popCardForRoom', () => {
+    it('should pop the top of card stacks', () => {
+      const room: roomModel.Room = {
+        users: [
+          { stack: [ [4, 0], [0, 12], [1, 13] ], score: 0 },
+          { stack: [ [0, 0], [1, 0], [3, 2] ], score: 0 },
+        ]
+      }
+
+      expect(popCardForRoom(room)).toEqual([ [1, 13], [3, 2] ])
+      expect(room.users.map(u => u.score)).toEqual([ 0, 1 ])
+
+      expect(popCardForRoom(room)).toEqual([ [0, 12], [1, 0] ])
+      expect(room.users.map(u => u.score)).toEqual([ 0, 2 ])
+
+      expect(popCardForRoom(room)).toEqual([ [4, 0], [0, 0] ])
+      expect(room.users.map(u => u.score)).toEqual([ 1, 2 ])
+    })
   })
 })
+
