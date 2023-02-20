@@ -17,3 +17,7 @@ export const create = (id: RoomId, users: User[]) => {
 
 export const get = (id: RoomId) => rooms.get(id)
 
+export const popCardStack = (id: RoomId) => {
+  const roomState = get(id)
+  return roomState?.users.map(u => u.stack.pop()).filter(Boolean) ?? []
+}
