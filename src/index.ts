@@ -3,13 +3,6 @@ import { newRoom, popCard } from "./stack-manager"
 
 const rl = createInterface(process.stdin, process.stdout)
 
-const VALUE_MAP = { 0: 'A', 10: 'J', 11: 'Q', 12: 'K' }
-
-const toShape = (s: number) => ['♣', '♦', '♥', '♠'][s]
-
-// @ts-ignore
-const toValue = (v: number) => (VALUE_MAP[v] ? VALUE_MAP[v] as string : `${v + 1}`).padStart(2)
-
 const main = async () => {
   const roomId = 'test-room'
   newRoom(roomId)
@@ -31,11 +24,11 @@ const main = async () => {
       return
     }
 
-    console.log('------- -------')
-    console.log('|     | |     |')
-    console.log('|', result.userCards.map(([shape, value]) => `${toShape(shape)}${toValue(value)}`).join(' | | '), '|')
-    console.log('|     | |     |')
-    console.log('------- -------')
+    console.log('-------- --------')
+    console.log('|      | |      |')
+    console.log('| ', result.userCards.map(value => `${value}`.padStart(2, ' ')).join('  | |  '), ' |')
+    console.log('|      | |      |')
+    console.log('-------- --------')
 
     console.log('Score:', result.scores.join(' - '))
 

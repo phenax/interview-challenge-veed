@@ -2,10 +2,6 @@ import { newRoom, popCard, popCardForRoom } from "./stack-manager"
 import * as roomModel from './model/room'
 
 describe('StackManager', () => {
-  // beforeEach(() => {
-  //   (roomModel.create as any).mockClear()
-  // })
-
   it('should create a new room', () => {
     newRoom('hello')
 
@@ -19,29 +15,34 @@ describe('StackManager', () => {
   })
 
   it('should pop a card from stack', () => {
-    newRoom('hello')
+    roomModel.create('hello', [ { stack: [10, 3, 39], score: 0 }, { stack: [41, 52, 22], score: 0 } ])
 
-    const result = popCard('hello')
-    expect(result.type).toBe('next')
-    // expect(result.scores).toEqual([1, 0])
+    expect(popCard('hello')).toEqual({ type: 'next', scores: [1, 0], userCards: [ 39, 22 ] })
+    expect(popCard('hello')).toEqual({ type: 'next', scores: [1, 1], userCards: [ 3, 52 ] })
+    expect(popCard('hello')).toEqual({ type: 'next', scores: [1, 2], userCards: [ 10, 41 ] })
+    expect(popCard('hello')).toEqual({ type: 'done', scores: [1, 2] })
   })
 
   describe('popCardForRoom', () => {
     it('should pop the top of card stacks', () => {
       const room: roomModel.Room = {
         users: [
-          { stack: [ [3, 0], [0, 12], [1, 13] ], score: 0 },
-          { stack: [ [0, 0], [1, 0], [3, 2] ], score: 0 },
+          { stack: [ 10, 3, 39 ], score: 0 },
+          { stack: [ 41, 52, 22 ], score: 0 },
         ]
       }
 
-      expect(popCardForRoom(room)).toEqual([ [1, 13], [3, 2] ])
-      expect(room.users.map(u => u.score)).toEqual([ 0, 1 ])
+      expect(popCardForRoom(room)).toEqual([ 39, 22 ])
+      expect(room.users.map(u => u.score)).toEqual([ 1, 0 ])
 
-      expect(popCardForRoom(room)).toEqual([ [0, 12], [1, 0] ])
-      expect(room.users.map(u => u.score)).toEqual([ 0, 2 ])
+      expect(popCardForRoom(room)).toEqual([ 3, 52 ])
+      expect(room.users.map(u => u.score)).toEqual([ 1, 1 ])
 
-      expect(popCardForRoom(room)).toEqual([ [3, 0], [0, 0] ])
+      expect(popCardForRoom(room)).toEqual([ 10, 41 ])
+      expect(room.users.map(u => u.score)).toEqual([ 1, 2 ])
+
+      // Done
+      expect(popCardForRoom(room)).toEqual([])
       expect(room.users.map(u => u.score)).toEqual([ 1, 2 ])
     })
   })
