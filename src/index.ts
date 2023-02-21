@@ -1,6 +1,6 @@
 import { createInterface } from 'node:readline/promises'
+import { zip } from 'ramda'
 import { newRoom, popCard } from './stack-manager'
-import { Card } from './types'
 
 const rl = createInterface(process.stdin, process.stdout)
 
@@ -26,7 +26,12 @@ const main = async () => {
     }
 
     const [cardA, cardB] = result.userCards
-    printCards(cardA, cardB)
+    const drawCards = (leftWon: boolean) => {
+      const boxes = leftWon ? zip(highlightBox(cardA), simpleBox(cardB)) 
+       : zip(simpleBox(cardA), highlightBox(cardB))
+      console.log(boxes.map(p => p.join(' ')).join('\n'))
+    }
+    drawCards(cardA > cardB)
 
     console.log('Score:', result.scores.join(' - '))
 
@@ -38,19 +43,21 @@ const main = async () => {
   await loop()
 }
 
-const printCards = (cardA: Card, cardB: Card) => {
-  console.log('┌──────┐ ┌──────┐')
-  console.log('│      │ │      │')
-  console.log(
-    '│ ',
-    `${cardA}`.padStart(2, ' '),
-    ' │ │ ',
-    `${cardB}`.padStart(2, ' '),
-    ' │'
-  )
-  console.log('│      │ │      │')
-  console.log('└──────┘ └──────┘')
-}
+const simpleBox = (value: any) => [
+  '┌──────┐',
+  '│      │',
+  `│  ${`${value}`.padStart(2, ' ')}  │`,
+  '│      │',
+  '└──────┘',
+]
+
+const highlightBox = (value: any) => [
+  '╔══════╗',
+  '║      ║',
+  `║  ${`${value}`.padStart(2, ' ')}  ║`,
+  '║      ║',
+  '╚══════╝',
+].map(l => `\x1b[1m\x1b[35m${l}\x1b[0m`)
 
 main()
   .finally(() => rl.close())
