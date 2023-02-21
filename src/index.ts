@@ -21,7 +21,8 @@ const main = async () => {
     console.log('Score:', result.scores.join(' - '))
 
     console.log()
-    await rl.question('')
+    await rl.question('Press enter to continue: ')
+    console.log()
     await loop()
   }
 
