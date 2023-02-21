@@ -1,3 +1,4 @@
+import { splitEvery } from 'ramda'
 import { Card, CardStack } from './types'
 
 export const shuffle = (ls: any[]) =>
@@ -12,16 +13,6 @@ export const shuffle = (ls: any[]) =>
     [...ls]
   )
 
-const splitEvery = <T>(size: number, ls: T[]): T[][] =>
-  ls.reduce((stacks: T[][], card, index): T[][] => {
-    if (index % size < 1) {
-      return [[card], ...stacks]
-    }
-
-    const [first, ...rest] = stacks
-    return [[card, ...first], ...rest]
-  }, [])
-
 export const generateStacks = (
   split = 2,
   shouldShuffle = true
@@ -34,3 +25,20 @@ export const generateStacks = (
   const size = cards.length / split
   return splitEvery(size, cards)
 }
+
+export const showSimpleBox = (value: any) => [
+  '┌──────┐',
+  '│      │',
+  `│  ${`${value}`.padStart(2, ' ')}  │`,
+  '│      │',
+  '└──────┘',
+]
+
+export const showHighlightBox = (value: any) =>
+  [
+    '╔══════╗',
+    '║      ║',
+    `║  ${`${value}`.padStart(2, ' ')}  ║`,
+    '║      ║',
+    '╚══════╝',
+  ].map((l) => `\x1b[1m\x1b[35m${l}\x1b[0m`)

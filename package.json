@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc --noEmit false",
+    "format": "prettier --write ./src/**/*.ts",
     "start": "tsx ./src/index.ts",
     "test": "jest"
   },
