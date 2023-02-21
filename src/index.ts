@@ -15,13 +15,15 @@ const main = async () => {
       const [scoreA, scoreB] = result.scores
       console.log('Final Score:', result.scores.join(' - '))
 
+      process.stdout.write('\x1b[1m\x1b[1m=== ')
       if (scoreA > scoreB) {
-        console.log('User 1 won!')
+        process.stdout.write('User 1 won!')
       } else if (scoreA < scoreB) {
-        console.log('User 2 won!')
+        process.stdout.write('User 2 won!')
       } else {
-        console.log('Its a tie!')
+        process.stdout.write('Its a tie!')
       }
+      process.stdout.write(' === \x1b[0m\n')
       return
     }
 
