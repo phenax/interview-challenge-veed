@@ -1,6 +1,6 @@
-import { createInterface } from "node:readline/promises"
-import { newRoom, popCard } from "./stack-manager"
-import { Card } from "./types"
+import { createInterface } from 'node:readline/promises'
+import { newRoom, popCard } from './stack-manager'
+import { Card } from './types'
 
 const rl = createInterface(process.stdin, process.stdout)
 
@@ -41,11 +41,17 @@ const main = async () => {
 const printCards = (cardA: Card, cardB: Card) => {
   console.log('┌──────┐ ┌──────┐')
   console.log('│      │ │      │')
-  console.log('│ ', `${cardA}`.padStart(2, ' '), ' │ │ ', `${cardB}`.padStart(2, ' '), ' │')
+  console.log(
+    '│ ',
+    `${cardA}`.padStart(2, ' '),
+    ' │ │ ',
+    `${cardB}`.padStart(2, ' '),
+    ' │'
+  )
   console.log('│      │ │      │')
   console.log('└──────┘ └──────┘')
 }
 
 main()
   .finally(() => rl.close())
-  .catch(e => (console.error(e), process.exit(1)))
+  .catch((e) => (console.error(e), process.exit(1)))

@@ -6,14 +6,20 @@ const ROOM_SIZE = 2
 
 export const newRoom = (id: RoomId) => {
   const stacks = generateStacks(ROOM_SIZE)
-  roomModel.create(id, stacks.map(stack => ({ stack, score: 0 })))
+  roomModel.create(
+    id,
+    stacks.map((stack) => ({ stack, score: 0 }))
+  )
 }
 
 export const popCardForRoom = (id: RoomId) => {
   const poppedCards = roomModel.popTopOfTheStack(id)
 
   if (poppedCards.length === ROOM_SIZE) {
-    const winnerIdx = poppedCards.reduce((maxIdx, card, idx) => card > poppedCards[maxIdx] ? idx : maxIdx, 0)
+    const winnerIdx = poppedCards.reduce(
+      (maxIdx, card, idx) => (card > poppedCards[maxIdx] ? idx : maxIdx),
+      0
+    )
     roomModel.incrementScore(id, winnerIdx)
   }
 
@@ -24,7 +30,7 @@ export const popCard = (id: RoomId) => {
   const roomState = roomModel.get(id)
 
   const poppedCards = popCardForRoom(id)
-  const scores = roomState.users.map(u => u.score)
+  const scores = roomState.users.map((u) => u.score)
 
   if (poppedCards.length !== ROOM_SIZE) {
     return { type: 'done' as const, scores }
@@ -32,4 +38,3 @@ export const popCard = (id: RoomId) => {
 
   return { type: 'next' as const, userCards: poppedCards, scores }
 }
-

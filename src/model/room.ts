@@ -1,4 +1,4 @@
-import { Card, CardStack, RoomId } from "../types"
+import { Card, CardStack, RoomId } from '../types'
 
 export interface User {
   stack: CardStack
@@ -23,11 +23,12 @@ export const get = (id: RoomId): Room => {
 
 export const popTopOfTheStack = (id: RoomId): Card[] => {
   const room = get(id)
-  return room.users.map(u => u.stack.pop()).filter(c => c) as Card[] ?? []
+  return (room.users.map((u) => u.stack.pop()).filter((c) => c) as Card[]) ?? []
 }
 
 export const incrementScore = (id: RoomId, userIdx: number) => {
   const room = get(id)
-  room.users = room.users.map((u, index) => userIdx === index ? { ...u, score: u.score + 1 }: u)
+  room.users = room.users.map((u, index) =>
+    userIdx === index ? { ...u, score: u.score + 1 } : u
+  )
 }
-
