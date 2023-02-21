@@ -1,5 +1,5 @@
 import * as roomModel from './model/room'
-import { Card, RoomId } from './types'
+import { RoomId } from './types'
 import { generateStacks } from './util'
 
 const ROOM_SIZE = 2
@@ -9,16 +9,12 @@ export const newRoom = (id: RoomId) => {
   roomModel.create(id, stacks.map(stack => ({ stack, score: 0 })))
 }
 
-export const popCardForRoom = (room: roomModel.Room) => {
-  // TODO: stack mutation
-  const poppedCards = room.users.map(u => u.stack.pop()).filter(c => c) as Card[] ?? []
+export const popCardForRoom = (id: RoomId) => {
+  const poppedCards = roomModel.popTopOfTheStack(id)
 
-  const maxCardScore = Math.max(...poppedCards)
-  const scoreIncrements = poppedCards.map(card => card === maxCardScore ? 1 : 0)
-
-  // TODO: score mutation
   if (poppedCards.length === ROOM_SIZE) {
-    room.users = room.users.map((u, index) => ({ ...u, score: scoreIncrements[index] + u.score }))
+    const winnerIdx = poppedCards.reduce((maxIdx, card, idx) => card > poppedCards[maxIdx] ? idx : maxIdx, 0)
+    roomModel.incrementScore(id, winnerIdx)
   }
 
   return poppedCards
@@ -26,12 +22,11 @@ export const popCardForRoom = (room: roomModel.Room) => {
 
 export const popCard = (id: RoomId) => {
   const roomState = roomModel.get(id)
-  if (!roomState) throw new Error('Invalid room id')
 
-  const poppedCards = popCardForRoom(roomState)
+  const poppedCards = popCardForRoom(id)
   const scores = roomState.users.map(u => u.score)
 
-  if (poppedCards.length < ROOM_SIZE) {
+  if (poppedCards.length !== ROOM_SIZE) {
     return { type: 'done' as const, scores }
   }
 
