@@ -8,7 +8,9 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "noEmit": true,
+    "outDir": "dist",
     "isolatedModules": false
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["./dist", "./node_modules"]
 }

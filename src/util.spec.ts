@@ -1,4 +1,5 @@
-import { generateStacks, toCardScore } from "./util"
+import { Card } from "./types"
+import { generateStacks, shuffle, toCardScore } from "./util"
 
 describe('cardScore', () => {
   it('should return card score', () => {
@@ -11,7 +12,7 @@ describe('cardScore', () => {
   })
 
   it('should generate unique card score for all cards in deck', () => {
-    const allCards = Array.from({ length: 4 }).flatMap((_, i) => Array.from({ length: 13 }, (_, j) => [i, j] as const))
+    const allCards = Array.from({ length: 4 }).flatMap((_, i) => Array.from({ length: 13 }, (_, j) => [i, j] as Card))
     const cardScores = allCards.map(toCardScore)
     expect(cardScores).toEqual(Array.from({ length: 52 }, (_, i) => i))
   })

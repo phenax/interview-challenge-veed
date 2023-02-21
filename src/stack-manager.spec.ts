@@ -30,7 +30,7 @@ describe('StackManager', () => {
     it('should pop the top of card stacks', () => {
       const room: roomModel.Room = {
         users: [
-          { stack: [ [4, 0], [0, 12], [1, 13] ], score: 0 },
+          { stack: [ [3, 0], [0, 12], [1, 13] ], score: 0 },
           { stack: [ [0, 0], [1, 0], [3, 2] ], score: 0 },
         ]
       }
@@ -41,7 +41,7 @@ describe('StackManager', () => {
       expect(popCardForRoom(room)).toEqual([ [0, 12], [1, 0] ])
       expect(room.users.map(u => u.score)).toEqual([ 0, 2 ])
 
-      expect(popCardForRoom(room)).toEqual([ [4, 0], [0, 0] ])
+      expect(popCardForRoom(room)).toEqual([ [3, 0], [0, 0] ])
       expect(room.users.map(u => u.score)).toEqual([ 1, 2 ])
     })
   })
